@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Alquileres</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+
+
+      var markers = [];
+      var map;
+      // var greenIcon = 'http://maps.google.com/mapfiles/ms/micons/green-dot.png';
+      var greenIcon = 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_green.png';
+
+      function initMap() {
+        var myLatLng = {
+          lat: -31.4167693, lng: -64.1998331
+        };
+
+
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 13,
+          center: myLatLng
+        });
+        $.ajax({
+          url: '/api/alquileres/',
+        })
+        .done(function (data) {
+
+          var offers = data['result'];
+
+          for (var i = 0; i < offers.length; i++) {
+
+            var infoWindow = new google.maps.InfoWindow({
+              content: offers[i].html
+            });
+
+            var marker = new google.maps.Marker({
+                position: offers[i].location,
+                map: map,
+                title: offers[i].title,
+                animation: google.maps.Animation.DROP,
+            });
+            if (offers[i].interesting) {
+              marker.setIcon(greenIcon);
+            }
+            marker.offer_id = offers[i]._id
+            markers.push(marker)
+
+            google.maps.event.addListener(marker, 'click', (function(marker,content,infowindow){
+              return function() {
+              infowindow.setContent(content);
+              infowindow.open(map, marker);
+            };
+            })(marker, offers[i].html, infoWindow))
+
+            /*
+            marker.addListener('click', function() {
+              infoWindow.open(map, marker);
+            });
+            */
+
+            window.setTimeout(function() {markers.push(marker);}, i * 200);
+          }
+
+        })
+        .fail(function () {
+          alert('Could not get offers from db');
+        });
+      }
+
+      function remove(offer_id) {
+        console.log('removing');
+        $.ajax({
+          url: "/api/alquiler/" + offer_id,
+          type: "DELETE"
+        });
+        markers.forEach( function (m) {
+          console.log(m);
+          if (m.offer_id == offer_id) {
+            m.setMap(null);
+          }
+        });
+      }
+      function keep(offer_id) {
+        console.log('keeping');
+        $.ajax({
+          url: "/api/alquiler/" + offer_id,
+          type: "PUT"
+        });
+        markers.forEach( function (m) {
+          console.log(m);
+          if (m.offer_id == offer_id) {
+            m.setIcon(greenIcon);
+          }
+        });
+      }
+  </script>
+	  function addMarkerWithTimeout(position, timeout) {
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGlWd98sP044Yii9XQ8EagBPt0PHK-pL0&callback=initMap">
+    </script>
+  </body>
+</html>

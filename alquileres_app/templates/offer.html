@@ -1,0 +1,37 @@
+  <h3>{{offer.address}}
+    {% if offer.neighbourhood %}
+        <small> - {{offer.neighbourhood}}</small>
+    {% endif %}
+  <button id="{{ offer._id }}" type="submit"
+          class="btn btn-danger pull-right"
+          onclick="remove('{{ offer._id }}')"
+          style="margin-left: 5px;">Eliminar</button>
+  <button id="{{ offer._id }}" type="submit"
+          class="btn btn-success pull-right"
+          onclick="keep('{{ offer._id }}')">Interesante</button>
+  </h3>
+  <p class="small">{{offer.description}}</p>
+  <ul>
+    <li>{{ offer.bedrooms}} Dormitorios</li>
+    <li>
+      {% if offer.garage %}
+        <span class="glyphicon glyphicon-ok" style="color: green"></span>
+      {% else %}
+        <span class="glyphicon glyphicon-remove" style="color: red"></span>
+      {% endif %}
+      Cochera
+    </li>
+    <li>
+      {% if offer.backyard %}
+        <span class="glyphicon glyphicon-ok" style="color: green"></span>
+      {% else %}
+        <span class="glyphicon glyphicon-remove" style="color: red"></span>
+      {% endif %}
+      Patio
+    </li>
+      {% if offer.price %}
+        <li>$ {{ offer.price }}</li>
+      {% endif %}
+  </ul>
+  <p class="pull-right"><a href="{{ offer.url }}" target="_blank">{{offer.url}}</p>
+
