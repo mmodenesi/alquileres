@@ -22,7 +22,7 @@ USER_AGENT = ('Mozilla/5.0 (X11; Linux x86_64) '
               'Safari/537.36')
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 CONCURRENT_REQUESTS = 1
@@ -69,10 +69,11 @@ CONCURRENT_REQUESTS = 1
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     'alquileres.pipelines.MongoItemDoesNotExist': 100,
+    'alquileres.pipelines.NoDepto': 200,
     'alquileres.pipelines.PopulateItem': 300,
-    'alquileres.pipelines.NoCountry': 400,
+#    'alquileres.pipelines.NoCountry': 400,
     'alquileres.pipelines.AlquileresMap': 500,
-    'alquileres.pipelines.NotTooFarAwayPlease': 600,
+#    'alquileres.pipelines.NotTooFarAwayPlease': 600,
     'alquileres.pipelines.InsertIntoMongoDB': 700
 }
 

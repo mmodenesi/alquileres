@@ -39,14 +39,14 @@ class LavozSpider(scrapy.Spider):
         'f[0]=im_taxonomy_vid_34:6330&'
         'f[1]=im_taxonomy_vid_34:6331&'
         'f[2]=ss_operacion:Alquileres&'
-        'f[3]=ss_cantidad_dormitorios:2 Dormitorios'
+        'f[3]=ss_cantidad_dormitorios:2 Dormitorios&'
         'f[4]=im_taxonomy_vid_5:3173&'
         'f[5]=im_taxonomy_vid_5:3194',
         'http://www.clasificadoslavoz.com.ar/search/apachesolr_search?'
         'f[0]=im_taxonomy_vid_34:6330&'
         'f[1]=im_taxonomy_vid_34:6331&'
         'f[2]=ss_operacion:Alquileres&'
-        'f[3]=ss_cantidad_dormitorios:3 Dormitorios'
+        'f[3]=ss_cantidad_dormitorios:3 Dormitorios&'
         'f[4]=im_taxonomy_vid_5:3173&'
         'f[5]=im_taxonomy_vid_5:3194',
     ]
@@ -63,7 +63,7 @@ class LavozSpider(scrapy.Spider):
             yield scrapy.Request(response.urljoin(next_url), callback=self.parse)
 
     def parse_alquiler(self, response):
-        ended = response.xpath(self.xpath_selectors['ended']) is not None
+        ended = len(response.xpath(self.xpath_selectors['ended'])) > 1
         description_div = response.css(self.css_selectors['description_div'])
         description_raw = description_div.xpath('.//*//text()').extract()
         description = '\n'.join([elem.strip()
@@ -77,8 +77,8 @@ class LavozSpider(scrapy.Spider):
 
         price = ''.join(response.css(self.css_selectors['price']).re('\$(\d+)[\.,](\d+)'))
         bedrooms = response.xpath(self.xpath_selectors['bedrooms']).re('\d+')[0]
-        garage = response.xpath(self.xpath_selectors['garage']) is not None
-        backyard = response.xpath(self.xpath_selectors['backyard']) is not None
+        garage = len(response.xpath(self.xpath_selectors['garage'])) > 1
+        backyard = len(response.xpath(self.xpath_selectors['backyard'])) > 1
 
         item = AlquileresItem()
         item['date_scrapped'] = datetime.now()

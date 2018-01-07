@@ -9,20 +9,24 @@ import scrapy
 
 
 class AlquileresItem(scrapy.Item):
-    date_scrapped = scrapy.Field()
-    ended = scrapy.Field()
-    discarded = scrapy.Field()
-    interesting = scrapy.Field()
     url = scrapy.Field()
+    date_scrapped = scrapy.Field()
+
+    ended = scrapy.Field()
+
     maps_place_id = scrapy.Field()
     location = scrapy.Field()
 
-    price = scrapy.Field()
-    description = scrapy.Field()
     address = scrapy.Field()
     neighbourhood = scrapy.Field()
-    city = scrapy.Field()
     type_of_neighbourhood = scrapy.Field()
+    city = scrapy.Field()
+    description = scrapy.Field()
     garage = scrapy.Field()
     backyard = scrapy.Field()
     bedrooms = scrapy.Field()
+
+    price = scrapy.Field()
+
+    discarded = scrapy.Field()
+    interesting = scrapy.Field()

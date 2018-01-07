@@ -8,8 +8,13 @@
           style="margin-left: 5px;">Eliminar</button>
   <button id="{{ offer._id }}" type="submit"
           class="btn btn-success pull-right"
-          onclick="keep('{{ offer._id }}')">Interesante</button>
+          onclick="pin('{{ offer._id }}')">Interesante</button>
   </h3>
+  <hr/>
+
+  <p class="small">
+    <strong>{{offer.date_scrapped.strftime('%d-%m-%Y %H:%M')}} </strong>
+  </p>
   <p class="small">{{offer.description}}</p>
   <ul>
     <li>{{ offer.bedrooms}} Dormitorios</li>
